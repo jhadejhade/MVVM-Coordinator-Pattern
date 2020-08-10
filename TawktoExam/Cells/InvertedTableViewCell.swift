@@ -20,14 +20,12 @@ class InvertedTableViewCell: UITableViewCell, UsersElementCell {
     var nameLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = .white
         return label
     }()
     
     var detailsLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.textColor = .white
         return label
     }()
     
@@ -43,7 +41,6 @@ class InvertedTableViewCell: UITableViewCell, UsersElementCell {
         addSubview(nameLabel)
         addSubview(detailsLabel)
         addSubview(noteButtonImage)
-        backgroundColor = .black
         
         avatar.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +81,9 @@ class InvertedTableViewCell: UITableViewCell, UsersElementCell {
         
         nameLabel.text = user.name
         detailsLabel.text = user.type
-        avatar.load(placeholder: UIImage(systemName: "person.circle"), imgUrl: user.avatarUrl) { (image) in }
+        avatar.load(placeholder: UIImage(systemName: "person.circle"), imgUrl: user.avatarUrl) { (image) in
+            self.avatar.invert()
+        }
         
         if (user.note.isEmpty)
         {
@@ -98,8 +97,9 @@ class InvertedTableViewCell: UITableViewCell, UsersElementCell {
         {
             self.backgroundColor = .lightGray
         } else {
-            self.backgroundColor = .black
+            self.backgroundColor = .white
         }
+        
     }
     
     override func draw(_ rect: CGRect) {

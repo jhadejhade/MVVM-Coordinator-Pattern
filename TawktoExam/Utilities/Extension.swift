@@ -40,6 +40,22 @@ extension UIView {
 }
 
 extension UIImageView {
+    func invert()
+    {
+        //add inverted filter to the image and set it again on uiimageview
+        let defaultImage = CIImage(image: self.image ?? UIImage())
+        guard let beginImage = defaultImage else {
+            return
+        }
+        if let filter = CIFilter(name: "CIColorInvert") {
+            filter.setValue(beginImage, forKey: kCIInputImageKey)
+            guard let image = filter.outputImage
+                else { return }
+            let newImage = UIImage(ciImage: image)
+            self.image = newImage
+        }
+    }
+    
     func load(placeholder:UIImage?,imgUrl:String,completion:@escaping (UIImage?) -> Void){
         
         // load placeholder image while doing the operation
