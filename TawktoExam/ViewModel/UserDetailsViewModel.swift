@@ -106,13 +106,13 @@ extension UserDetailsViewModel
         var dataSource = [CellDetail]()
         if let details = userDetails
         {
-            dataSource.append(CellDetail(label: "Name:", value: details.name ?? "N/A"))
-            dataSource.append(CellDetail(label: "Bio:", value: details.bio ?? "N/A"))
-            dataSource.append(CellDetail(label: "Company:", value: details.company ?? "N/A"))
-            dataSource.append(CellDetail(label: "Login Name:", value: details.login ?? "N/A"))
-            dataSource.append(CellDetail(label: "Login Type:", value: details.type ?? "N/A"))
-            dataSource.append(CellDetail(label: "Note:", value: details.note ?? StringConstants.notePlaceholder))
-            dataSource.append(CellDetail(label: "Hireable:", value: (details.hireable ?? false).description))
+            dataSource.append(CellDetail(label: StringConstants.loginNameLabel, value: details.name ?? "N/A"))
+            dataSource.append(CellDetail(label: StringConstants.bioLabel, value: details.bio ?? "N/A"))
+            dataSource.append(CellDetail(label: StringConstants.companyLabel, value: details.company ?? "N/A"))
+            dataSource.append(CellDetail(label: StringConstants.loginNameLabel, value: details.login ?? "N/A"))
+            dataSource.append(CellDetail(label: StringConstants.loginTypeLabel, value: details.type ?? "N/A"))
+            dataSource.append(CellDetail(label: StringConstants.hireableLabel, value: (details.hireable ?? false).description))
+            dataSource.append(CellDetail(label: StringConstants.noteLabel, value: details.note ?? StringConstants.notePlaceholder))
         }
         
         return dataSource

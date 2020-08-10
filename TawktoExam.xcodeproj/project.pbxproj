@@ -44,7 +44,6 @@
 		CD79412924E02DC900E6A903 /* DetailHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79412724E02DC900E6A903 /* DetailHeaderTableViewCell.swift */; };
 		CD79412A24E02DC900E6A903 /* DetailHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD79412824E02DC900E6A903 /* DetailHeaderTableViewCell.xib */; };
 		CD79412C24E03EC300E6A903 /* UserDetailsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD79412B24E03EC300E6A903 /* UserDetailsRepository.swift */; };
-		CDD117B024E15C73001345E2 /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD117AF24E15C73001345E2 /* BaseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,7 +107,6 @@
 		CD79412724E02DC900E6A903 /* DetailHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		CD79412824E02DC900E6A903 /* DetailHeaderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		CD79412B24E03EC300E6A903 /* UserDetailsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsRepository.swift; sourceTree = "<group>"; };
-		CDD117AF24E15C73001345E2 /* BaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,7 +208,6 @@
 				CD44AA1024DC2BBA00B7EB51 /* User.swift */,
 				CD79411124DD9C6A00E6A903 /* UserDetail.swift */,
 				CD79411F24E0237900E6A903 /* CellDetail.swift */,
-				CDD117AF24E15C73001345E2 /* BaseModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -474,7 +471,6 @@
 				CD7940FE24DD148B00E6A903 /* Extension.swift in Sources */,
 				CD44A9D924DBB68C00B7EB51 /* AppDelegate.swift in Sources */,
 				CD79411024DD9A8100E6A903 /* UserDetailsViewModel.swift in Sources */,
-				CDD117B024E15C73001345E2 /* BaseModel.swift in Sources */,
 				CD44AA1624DC31CC00B7EB51 /* APIManager.swift in Sources */,
 				CD7940F924DC942500E6A903 /* NoteTableViewCell.swift in Sources */,
 				CD79410124DD3BBE00E6A903 /* CoreDataContextProvider.swift in Sources */,

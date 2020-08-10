@@ -23,7 +23,10 @@ protocol UsersElementCell: class {
     func configure(model: UsersElementModel)
 }
 
-class UsersViewController: BaseViewController {
+protocol UserController {
+    func updateNote(at index: Int, note: String)
+}
+class UsersViewController: BaseViewController, UserController {
     
     var tableView = UITableView()
     
@@ -41,7 +44,11 @@ class UsersViewController: BaseViewController {
         self.networkStatusChanged = { (status) in
              self.getUsers(page: self.lastPage)
         }
-       
+    }
+    
+    func updateNote(at index: Int, note: String) {
+        self.userViewModel.users[index].note = note
+        self.tableView.reloadData()
     }
     
     /// Sets the delegate and datasource and then programatically add tableview to the parent view together with its constraint and.
@@ -141,7 +148,7 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        coordinator?.viewDetails(user: userViewModel.users[indexPath.row])
+        coordinator?.viewDetails(viewController: self, user: userViewModel.users[indexPath.row], index: indexPath.row)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

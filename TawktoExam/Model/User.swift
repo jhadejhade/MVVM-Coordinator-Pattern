@@ -36,7 +36,7 @@ class User: Codable, UsersElementModel {
     var currentIndex: Int = 0 {
         didSet {
             let modulo = currentIndex % 4
-            if (note.isEmpty && modulo != 0)
+            if ((note.isEmpty || note == StringConstants.notePlaceholder) && modulo != 0)
             { cellType = .normalCell }
             else if (modulo == 0)
             { cellType = .invertedCell }

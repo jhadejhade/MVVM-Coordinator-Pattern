@@ -23,11 +23,21 @@ class MainCoordinator: Coordinator
         navigationController.pushViewController(vc, animated: false)
     }
     
-    func viewDetails(user: User)
+    func viewDetails(viewController: UsersViewController, user: User, index: Int)
     {
         let detailsVc = UserDetailsViewController.instantiate()
         detailsVc.coordinator = self
         detailsVc.user = user
+        detailsVc.detailIndex = index
+        detailsVc.delegate = viewController
         navigationController.pushViewController(detailsVc, animated: true)
+    }
+    
+    func showSuccessAlert() {
+        let alertController = UIAlertController(title: "Success", message: "Sucessfully Added a note!", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            
+        }))
+        navigationController.present(alertController, animated: true, completion: nil)
     }
 }

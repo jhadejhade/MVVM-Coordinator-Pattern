@@ -25,8 +25,11 @@ protocol UserDetailsElementCell: class {
 class UserDetailsViewController: BaseViewController {
     @IBOutlet var tableView: UITableView!
     
+    var detailIndex = 0
     var user: User!
     private var userDetailsViewModel = UserDetailsViewModel()
+    
+    var delegate: UserController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +62,8 @@ class UserDetailsViewController: BaseViewController {
         //this is important because we are only saving the text data from note textview on end edit
         view.endEditing(true)
         self.userDetailsViewModel.updateUserDetails { (result) in
-            
+            self.coordinator?.showSuccessAlert()
+            self.delegate?.updateNote(at: self.detailIndex, note: self.userDetailsViewModel.userDetails!.note!)
         }
     }
     
@@ -152,7 +156,7 @@ extension UserDetailsViewController: UITableViewDelegate, UITableViewDataSource
         let dataSource = userDetailsViewModel.generalInfoDataSource()[indexPath.row]
         let identifier = dataSource.cellType.rawValue
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! UserDetailsElementCell
-    
+        
         cell.configure(model: dataSource)
         cell.textViewChanged = { (textView) in
             self.userDetailsViewModel.userDetails?.note = textView.text

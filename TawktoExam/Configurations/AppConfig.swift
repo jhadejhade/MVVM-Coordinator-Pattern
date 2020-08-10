@@ -14,8 +14,14 @@ struct AppConfig {
 
 struct StringConstants {
     static let notePlaceholder = "Enter note here..."
-    static let noteLabel = "Note"
+    static let noteLabel = "Note:"
+    static let bioLabel = "Bio:"
+    static let companyLabel = "Company:"
+    static let loginNameLabel = "Login Name:"
+    static let loginTypeLabel = "Login Type:"
+    static let hireableLabel = "Hireable:"
     static let detailsTitle = "Details"
     static let usersTitle = "Users"
     static let saveTitle = "Save"
+    
 }

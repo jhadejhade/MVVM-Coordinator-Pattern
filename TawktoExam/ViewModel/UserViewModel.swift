@@ -38,6 +38,7 @@ extension UserViewModel
             guard let self = self else { return }
             switch result {
             case .failure(let error):
+                print(error)
                 switch error {
                 case .noInternetConnection:
                     //fetch from core data when no internet connection
