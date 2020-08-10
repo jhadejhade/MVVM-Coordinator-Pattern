@@ -61,9 +61,12 @@ class UserDetailsViewController: BaseViewController {
     @objc func updateData(){
         //this is important because we are only saving the text data from note textview on end edit
         view.endEditing(true)
+        //bail if no changes made on the notes to prevent unnecessary write requests
+        guard let userDetails = self.userDetailsViewModel.userDetails, let note = userDetails.note
+            else { return }
         self.userDetailsViewModel.updateUserDetails { (result) in
             self.coordinator?.showSuccessAlert()
-            self.delegate?.updateNote(at: self.detailIndex, note: self.userDetailsViewModel.userDetails!.note!)
+            self.delegate?.updateNote(at: self.detailIndex, note: note)
         }
     }
     
