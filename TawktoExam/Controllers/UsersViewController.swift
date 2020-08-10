@@ -45,6 +45,7 @@ class UsersViewController: BaseViewController, UserController {
         configureUI()
         
         self.networkStatusChanged = { (status) in
+             //refresh data as soon as we are connected to the net
             self.getUsers(page: self.lastPage)
         }
     }
