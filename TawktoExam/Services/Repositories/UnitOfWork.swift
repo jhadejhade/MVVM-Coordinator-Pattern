@@ -12,7 +12,7 @@ class UnitOfWork {
     /// The NSManagedObjectContext instance to be used for performing the unit of work.
     private let context: NSManagedObjectContext
 
-    /// Book repository instance.
+    /// repository instances.
     let userRepository: UserRepository
     let userDetailsRepository: UserDetailsRepository
     
