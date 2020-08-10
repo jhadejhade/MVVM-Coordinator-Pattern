@@ -141,7 +141,7 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        coordinator?.viewDetails(username: userViewModel.users[indexPath.row].name)
+        coordinator?.viewDetails(user: userViewModel.users[indexPath.row])
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {

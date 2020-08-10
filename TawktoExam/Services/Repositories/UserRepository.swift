@@ -108,6 +108,7 @@ extension UserEntity: DomainModel {
         receivedEventsUrl = model.receivedEventsUrl
         type = model.type
         siteAdmin = model.siteAdmin
+        note = model.note
     }
     
     func toDomainModel() -> User {
@@ -129,7 +130,7 @@ extension UserEntity: DomainModel {
                     receivedEventsUrl: receivedEventsUrl!,
                     type: type!,
                     siteAdmin: siteAdmin,
-                    note: "",
+                    note: note ?? "",
                     currentIndex: Int(currentIndex))
     }
 }

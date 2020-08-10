@@ -15,8 +15,8 @@ enum ObjectError: Error
 class UserDetailsViewModel {
     let userProvider: UserProvider = APIManager.shared
     
+    var user: User?
     var userDetails: UserDetail?
-    var username = ""
     
     let getUserDetailsUow: UnitOfWork!
     let createUserDetailsUow: UnitOfWork!
@@ -49,8 +49,8 @@ extension UserDetailsViewModel
                     let result = self.getUserDetailsUow.userDetailsRepository.getDetails(predicate: NSPredicate(format: "login == %@", username))
                     switch result {
                     case .success(let userDetail):
-                        self.userDetails = userDetail
-                        completion(.success(userDetail))
+                        self.userDetails = userDetail?.first
+                        completion(.success(userDetail?.first))
                     case .failure(let error):
                         completion(.failure(error))
                     }
@@ -61,6 +61,14 @@ extension UserDetailsViewModel
             case .success(let userDetails):
                 self.userDetails = userDetails
                 self.persistData()
+                let result = self.getUserDetailsUow.userDetailsRepository.getDetails(predicate: NSPredicate(format: "login == %@", username))
+                switch result {
+                case .success(let userDetail):
+                    self.userDetails?.note = userDetail?.first?.note
+                case .failure(let error):
+                   //error fetching notes
+                    print(error)
+                }
                 completion(.success(userDetails))
             }
         }
@@ -80,6 +88,16 @@ extension UserDetailsViewModel
             completion(.failure(error))
         }
         // update user
+        user?.note = userDetails.note!
+        let userResult = createUserDetailsUow.userRepository.update(user: user!)
+        switch userResult {
+        case .success(let success):
+            //only save change if we successfully got the data to update
+            createUserDetailsUow.saveChanges()
+            completion(.success(success))
+        case .failure(let error):
+            completion(.failure(error))
+        }
     }
     
     //Convert our model into an array of tuples so we can use it as a datasource in the table
@@ -88,11 +106,13 @@ extension UserDetailsViewModel
         var dataSource = [CellDetail]()
         if let details = userDetails
         {
-            dataSource.append(CellDetail(label: "Name", value: details.name ?? "N/A"))
-            dataSource.append(CellDetail(label: "Company", value: details.company ?? "N/A"))
-            dataSource.append(CellDetail(label: "Login Name", value: details.login ?? "N/A"))
-            dataSource.append(CellDetail(label: "Login Type", value: details.type ?? "N/A"))
-            dataSource.append(CellDetail(label: "Note", value: details.note ?? StringConstants.notePlaceholder))
+            dataSource.append(CellDetail(label: "Name:", value: details.name ?? "N/A"))
+            dataSource.append(CellDetail(label: "Bio:", value: details.bio ?? "N/A"))
+            dataSource.append(CellDetail(label: "Company:", value: details.company ?? "N/A"))
+            dataSource.append(CellDetail(label: "Login Name:", value: details.login ?? "N/A"))
+            dataSource.append(CellDetail(label: "Login Type:", value: details.type ?? "N/A"))
+            dataSource.append(CellDetail(label: "Note:", value: details.note ?? StringConstants.notePlaceholder))
+            dataSource.append(CellDetail(label: "Hireable:", value: (details.hireable ?? false).description))
         }
         
         return dataSource
@@ -106,7 +126,7 @@ extension UserDetailsViewModel
         switch result {
         case .success(let user):
             // safe to add new entry (No Duplicates)
-            if (user == nil)
+            if (user!.count == 0)
             {
                 let result = createUserDetailsUow.userDetailsRepository.create(userDetails: userDetails)
                 switch result {
@@ -117,7 +137,7 @@ extension UserDetailsViewModel
                     print(error)
                 }
             } else {
-                print("Duplicate Entry for user \(String(describing: user?.name))")
+                //duplicate entry
             }
         case .failure(let error):
             print(error)

@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 protocol UserDetailsRepositoryInterface {
-    func getDetails(predicate: NSPredicate?) -> Result<UserDetail?, Error>
+    func getDetails(predicate: NSPredicate?) -> Result<[UserDetail]?, Error>
     func create(userDetails: UserDetail) -> Result<Bool, Error>
     func update(userDetails: UserDetail) -> Result<Bool, Error>
 }
@@ -24,15 +24,14 @@ class UserDetailsRepository {
 }
 
 extension UserDetailsRepository: UserDetailsRepositoryInterface {
-    @discardableResult func getDetails(predicate: NSPredicate?) -> Result<UserDetail?, Error> {
+    @discardableResult func getDetails(predicate: NSPredicate?) -> Result<[UserDetail]?, Error> {
         let result = self.repository.get(predicate: predicate, sortDescriptors: nil)
         switch result {
-            
         case .success(let usersDetailsEntity):
             let users = usersDetailsEntity.map { usersDetailsEntity -> UserDetail in
                 return usersDetailsEntity.toDomainModel()
             }
-            return .success(users.first)
+            return .success(users)
         case .failure(let error):
             return .failure(error)
         }
@@ -97,7 +96,7 @@ extension UserDetailsEntity: DomainModel {
         blog = model.blog
         location = model.location
         email = model.email
-        hireable = model.hireable
+        hireable = model.hireable ?? false
         bio = model.bio
         twitterUsername = model.twitterUsername
         publicRepos = Int32(model.publicRepos)
@@ -106,6 +105,7 @@ extension UserDetailsEntity: DomainModel {
         following = Int32(model.following)
         createdAt = model.createdAt
         updatedAt = model.updatedAt
+        note = model.note
     }
     
     func toDomainModel() -> UserDetail {
@@ -140,6 +140,6 @@ extension UserDetailsEntity: DomainModel {
                           following: Int(following),
                           createdAt: createdAt!,
                           updatedAt: updatedAt!,
-                          note: "")
+                          note: note)
     }
 }

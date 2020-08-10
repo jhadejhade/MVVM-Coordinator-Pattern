@@ -56,8 +56,20 @@ extension UserViewModel
                 }
             case .success(let responseUsers):
                 self.users.append(contentsOf: responseUsers)
+                for i in self.lastDataCount...self.users.count - 1 {
+                    let result = self.getUserUow.userRepository.getUsers(predicate: NSPredicate(format: "name == %@", self.users[i].name))
+                    switch result {
+                    case .success(let users):
+                        self.users[i].note = users.first?.note ?? ""
+                    case .failure(let error):
+                        //error fetching notes
+                        print(error)
+                        break;
+                    }
+                }
                 self.persistData()
                 self.lastDataCount = self.users.count
+                
                 completion(.success(responseUsers))
             }
         }
@@ -74,12 +86,11 @@ extension UserViewModel
                     _ = createUserUow.userRepository.create(user: userToSave)
                     createUserUow.saveChanges()
                 } else {
-                    print("Duplicate Entry for user \(String(describing: user?.name))")
+                   //duplicate entry
                 }
             case .failure(let error):
                 print(error)
             }
-            
         }
     }
 }

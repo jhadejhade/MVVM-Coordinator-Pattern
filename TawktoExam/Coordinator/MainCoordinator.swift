@@ -23,11 +23,11 @@ class MainCoordinator: Coordinator
         navigationController.pushViewController(vc, animated: false)
     }
     
-    func viewDetails(username: String)
+    func viewDetails(user: User)
     {
         let detailsVc = UserDetailsViewController.instantiate()
         detailsVc.coordinator = self
-        detailsVc.username = username
+        detailsVc.user = user
         navigationController.pushViewController(detailsVc, animated: true)
     }
 }

@@ -25,7 +25,7 @@ protocol UserDetailsElementCell: class {
 class UserDetailsViewController: BaseViewController {
     @IBOutlet var tableView: UITableView!
     
-    var username: String!
+    var user: User!
     private var userDetailsViewModel = UserDetailsViewModel()
     
     override func viewDidLoad() {
@@ -35,7 +35,7 @@ class UserDetailsViewController: BaseViewController {
         configureTable()
         addObservers()
         //for querying into core data
-        self.userDetailsViewModel.username = self.username
+        self.userDetailsViewModel.user = self.user
         //get initial data
         getDetails()
         self.networkStatusChanged = { (status) in
@@ -79,7 +79,7 @@ class UserDetailsViewController: BaseViewController {
     
     func getDetails()
     {
-        userDetailsViewModel.fetchUserDetails(username: self.username) { (result) in
+        userDetailsViewModel.fetchUserDetails(username: self.user.name) { (result) in
             switch (result)
             {
             case .success(_):

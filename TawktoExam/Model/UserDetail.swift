@@ -28,13 +28,13 @@ class UserDetail: Codable, UserDetailsElementModel {
     let eventsUrl: String?
     let receivedEventsUrl: String?
     let type: String?
-    let siteAdmin: Bool = false
+    var siteAdmin: Bool?
     let name: String?
     let company: String?
     let blog: String?
     let location: String?
     let email: String?
-    let hireable: String?
+    var hireable: Bool?
     let bio: String?
     let twitterUsername: String?
     let publicRepos: Int
@@ -81,7 +81,7 @@ class UserDetail: Codable, UserDetailsElementModel {
         case note
     }
     
-    internal init(cellType: UserDetailsElementType = .detailCell, login: String?, id: Int?, nodeId: String?, avatarUrl: String?, gravatarId: String?, url: String?, htmlUrl: String?, followersUrl: String?, followingUrl: String?, gistsUrl: String?, starredUrl: String?, subscriptionsUrl: String?, organizationsUrl: String?, reposUrl: String?, eventsUrl: String?, receivedEventsUrl: String?, type: String?, name: String?, company: String?, blog: String?, location: String?, email: String?, hireable: String?, bio: String?, twitterUsername: String?, publicRepos: Int, publicGists: Int, followers: Int, following: Int, createdAt: Date, updatedAt: Date, note: String?) {
+    internal init(cellType: UserDetailsElementType = .detailCell, login: String?, id: Int?, nodeId: String?, avatarUrl: String?, gravatarId: String?, url: String?, htmlUrl: String?, followersUrl: String?, followingUrl: String?, gistsUrl: String?, starredUrl: String?, subscriptionsUrl: String?, organizationsUrl: String?, reposUrl: String?, eventsUrl: String?, receivedEventsUrl: String?, type: String?, name: String?, company: String?, blog: String?, location: String?, email: String?, hireable: Bool = false, bio: String?, twitterUsername: String?, publicRepos: Int, publicGists: Int, followers: Int, following: Int, createdAt: Date, updatedAt: Date, note: String?, siteAdmin: Bool = false) {
         self.cellType = cellType
         self.login = login
         self.id = id
@@ -115,6 +115,7 @@ class UserDetail: Codable, UserDetailsElementModel {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.note = note
+        self.siteAdmin = siteAdmin
     }
     
 }
