@@ -35,11 +35,12 @@ class UsersViewController: BaseViewController, UserController {
     var lastPage = 0
     var currentVisibleIndex = 0
     
+    lazy var searchBar:UISearchBar = UISearchBar()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = StringConstants.usersTitle
-        configureTable()
+        configureUI()
         
         self.networkStatusChanged = { (status) in
              self.getUsers(page: self.lastPage)
@@ -51,8 +52,8 @@ class UsersViewController: BaseViewController, UserController {
         self.tableView.reloadData()
     }
     
-    /// Sets the delegate and datasource and then programatically add tableview to the parent view together with its constraint and.
-    func configureTable()
+    /// Sets the delegate and datasource and then programatically add the views to the parent view together with its constraint
+    func configureUI()
     {
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -61,6 +62,7 @@ class UsersViewController: BaseViewController, UserController {
         self.view.addSubview(tableView)
         
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        
         
         NSLayoutConstraint.activate([tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
                                      tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
@@ -71,6 +73,14 @@ class UsersViewController: BaseViewController, UserController {
         tableView.register(NormalUserTableViewCell.self, forCellReuseIdentifier: UsersElementType.normalCell.rawValue)
         tableView.register(NoteTableViewCell.self, forCellReuseIdentifier: UsersElementType.noteCell.rawValue)
         tableView.register(InvertedTableViewCell.self, forCellReuseIdentifier: UsersElementType.invertedCell.rawValue)
+        
+        searchBar.searchBarStyle = UISearchBar.Style.prominent
+        searchBar.placeholder = "Search..."
+        searchBar.sizeToFit()
+        searchBar.isTranslucent = false
+        searchBar.backgroundImage = UIImage()
+        searchBar.delegate = self
+        navigationItem.titleView = searchBar
     }
     
     func getUsers(page: Int){
@@ -162,5 +172,14 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource
         guard let indexPath = tableView.indexPathForRow(at: visiblePoint) else { return }
         
         currentVisibleIndex = indexPath.row
+    }
+}
+
+extension UsersViewController: UISearchBarDelegate
+{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        
+//        self.userViewModel.users = self.userViewModel.users.filter { $0.name == searchText.lowercased() || $0.name.contains(searchText.lowercased())}
+//        self.tableView.reloadData()
     }
 }
