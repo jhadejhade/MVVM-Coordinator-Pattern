@@ -13,6 +13,7 @@ enum CoreDataError: Error {
     case invalidManagedObjectType
     case noDataFound
 }
+
 protocol Repository {
     associatedtype Entity
     
@@ -28,9 +29,11 @@ protocol Repository {
     /// Updaets an entity
     func update(id: Int) -> Result<Entity?, Error>
 }
+
 protocol DomainModel {
     associatedtype DomainModelType
     func toDomainModel() -> DomainModelType
+    func setValues(model: DomainModelType)
 }
 class CoreDataRepository<T: NSManagedObject>: Repository {
     typealias Entity = T

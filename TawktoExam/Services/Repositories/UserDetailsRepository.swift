@@ -14,7 +14,6 @@ protocol UserDetailsRepositoryInterface {
     func create(userDetails: UserDetail) -> Result<Bool, Error>
     func update(userDetails: UserDetail) -> Result<Bool, Error>
 }
-
 class UserDetailsRepository {
     
     private let repository: CoreDataRepository<UserDetailsEntity>
@@ -23,7 +22,6 @@ class UserDetailsRepository {
         self.repository = CoreDataRepository<UserDetailsEntity>(managedObjectContext: context)
     }
 }
-
 
 extension UserDetailsRepository: UserDetailsRepositoryInterface {
     @discardableResult func getDetails(predicate: NSPredicate?) -> Result<UserDetail?, Error> {
@@ -45,39 +43,7 @@ extension UserDetailsRepository: UserDetailsRepositoryInterface {
         switch result {
         case .success(let userMO):
             // Update the userDetails properties.
-            userMO.avatarUrl = userDetails.avatarUrl
-            userMO.id = Int32(userDetails.id!)
-            userMO.nodeId = userDetails.nodeId
-            userMO.gravatarId = userDetails.gravatarId
-            userMO.name = userDetails.name
-            userMO.url = userDetails.url
-            userMO.htmlUrl = userDetails.htmlUrl
-            userMO.followersUrl = userDetails.followersUrl
-            userMO.followingUrl = userDetails.followingUrl
-            userMO.gistsUrl = userDetails.gistsUrl
-            userMO.starredUrl = userDetails.starredUrl
-            userMO.subscriptionsUrl = userDetails.subscriptionsUrl
-            userMO.organizationsUrl = userDetails.organizationsUrl
-            userMO.reposUrl = userDetails.reposUrl
-            userMO.eventsUrl = userDetails.eventsUrl
-            userMO.receivedEventsUrl = userDetails.receivedEventsUrl
-            userMO.type = userDetails.type
-            userMO.siteAdmin = userDetails.siteAdmin
-            userMO.login = userDetails.login
-            userMO.company = userDetails.company
-            userMO.blog = userDetails.blog
-            userMO.location = userDetails.location
-            userMO.email = userDetails.email
-            userMO.hireable = userDetails.hireable
-            userMO.bio = userDetails.bio
-            userMO.twitterUsername = userDetails.twitterUsername
-            userMO.publishGists = Int32(userDetails.publicGists)
-            userMO.publicRepos = Int32(userDetails.publicRepos)
-            userMO.following = Int32(userDetails.following)
-            userMO.followers = Int32(userDetails.followers)
-            userMO.createdAt = userDetails.createdAt
-            userMO.updatedAt = userDetails.updatedAt
-//            userMO.note = userDetails.note
+            userMO.setValues(model: userDetails)
             return .success(true)
         case .failure(let error):
             // Return the Core Data error.
@@ -91,40 +57,8 @@ extension UserDetailsRepository: UserDetailsRepositoryInterface {
         case .success(let entity):
             if let userMO = entity
             {
-               // Update the userDetails properties.
-                userMO.avatarUrl = userDetails.avatarUrl
-                userMO.id = Int32(userDetails.id!)
-                userMO.nodeId = userDetails.nodeId
-                userMO.gravatarId = userDetails.gravatarId
-                userMO.name = userDetails.name
-                userMO.url = userDetails.url
-                userMO.htmlUrl = userDetails.htmlUrl
-                userMO.followersUrl = userDetails.followersUrl
-                userMO.followingUrl = userDetails.followingUrl
-                userMO.gistsUrl = userDetails.gistsUrl
-                userMO.starredUrl = userDetails.starredUrl
-                userMO.subscriptionsUrl = userDetails.subscriptionsUrl
-                userMO.organizationsUrl = userDetails.organizationsUrl
-                userMO.reposUrl = userDetails.reposUrl
-                userMO.eventsUrl = userDetails.eventsUrl
-                userMO.receivedEventsUrl = userDetails.receivedEventsUrl
-                userMO.type = userDetails.type
-                userMO.siteAdmin = userDetails.siteAdmin
-                userMO.login = userDetails.login
-                userMO.company = userDetails.company
-                userMO.blog = userDetails.blog
-                userMO.location = userDetails.location
-                userMO.email = userDetails.email
-                userMO.hireable = userDetails.hireable
-                userMO.bio = userDetails.bio
-                userMO.twitterUsername = userDetails.twitterUsername
-                userMO.publishGists = Int32(userDetails.publicGists)
-                userMO.publicRepos = Int32(userDetails.publicRepos)
-                userMO.following = Int32(userDetails.following)
-                userMO.followers = Int32(userDetails.followers)
-                userMO.createdAt = userDetails.createdAt
-                userMO.updatedAt = userDetails.updatedAt
-//                userMO.note = userDetails.note
+                // Update the userDetails properties.
+                userMO.setValues(model: userDetails)
                 return .success(true)
             } else {
                 return .failure(CoreDataError.noDataFound)
@@ -139,6 +73,40 @@ extension UserDetailsRepository: UserDetailsRepositoryInterface {
 extension UserDetailsEntity: DomainModel {
     
     typealias DomainModelType = UserDetail
+    
+    func setValues(model: UserDetail) {
+        login = model.login
+        id = Int32(model.id!)
+        nodeId = model.nodeId
+        avatarUrl = model.avatarUrl
+        gravatarId = model.gravatarId
+        url = model.url
+        htmlUrl = model.htmlUrl
+        followersUrl = model.followersUrl
+        followingUrl = model.followingUrl
+        gistsUrl = model.gistsUrl
+        starredUrl = model.starredUrl
+        subscriptionsUrl = model.subscriptionsUrl
+        organizationsUrl = model.organizationsUrl
+        reposUrl = model.reposUrl
+        eventsUrl = model.eventsUrl
+        receivedEventsUrl = model.receivedEventsUrl
+        type = model.type
+        name = model.name
+        company = model.company
+        blog = model.blog
+        location = model.location
+        email = model.email
+        hireable = model.hireable
+        bio = model.bio
+        twitterUsername = model.twitterUsername
+        publicRepos = Int32(model.publicRepos)
+        publishGists = Int32(model.publicGists)
+        followers = Int32(model.followers)
+        following = Int32(model.following)
+        createdAt = model.createdAt
+        updatedAt = model.updatedAt
+    }
     
     func toDomainModel() -> UserDetail {
         return UserDetail(login: login,

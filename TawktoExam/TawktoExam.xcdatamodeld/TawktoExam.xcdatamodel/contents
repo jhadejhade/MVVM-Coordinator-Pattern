@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FullUserDetailsEntity" representedClassName="FullUserDetailsEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserEntity" inverseName="user" inverseEntity="UserEntity"/>
+        <relationship name="userDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserDetailsEntity" inverseName="userDetails" inverseEntity="UserDetailsEntity"/>
+    </entity>
+    <entity name="NoteEntity" representedClassName="NoteEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="UserDetailsEntity" representedClassName="UserDetailsEntity" syncable="YES" codeGenerationType="class">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>
         <attribute name="bio" optional="YES" attributeType="String"/>
@@ -33,6 +43,7 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="url" optional="YES" attributeType="String"/>
+        <relationship name="userDetails" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FullUserDetailsEntity" inverseName="userDetails" inverseEntity="FullUserDetailsEntity"/>
     </entity>
     <entity name="UserEntity" representedClassName="UserEntity" syncable="YES" codeGenerationType="class">
         <attribute name="avatarUrl" optional="YES" attributeType="String"/>
@@ -54,9 +65,12 @@
         <attribute name="subscriptionsUrl" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FullUserDetailsEntity" inverseName="user" inverseEntity="FullUserDetailsEntity"/>
     </entity>
     <elements>
-        <element name="UserDetailsEntity" positionX="-909" positionY="-846" width="128" height="523"/>
-        <element name="UserEntity" positionX="-1249.0078125" positionY="-810.16015625" width="128" height="328"/>
+        <element name="FullUserDetailsEntity" positionX="-1077.0859375" positionY="-628.515625" width="128" height="103"/>
+        <element name="UserDetailsEntity" positionX="-909" positionY="-846" width="128" height="538"/>
+        <element name="UserEntity" positionX="-1249.0078125" positionY="-810.16015625" width="128" height="343"/>
+        <element name="NoteEntity" positionX="-1080" positionY="-693" width="128" height="73"/>
     </elements>
 </model>

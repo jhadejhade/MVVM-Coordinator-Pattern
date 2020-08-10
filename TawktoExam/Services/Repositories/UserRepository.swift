@@ -58,24 +58,7 @@ extension UserRepository: UserRepositoryInterface {
         switch result {
         case .success(let userMO):
             // Update the user properties.
-            userMO.avatarUrl = user.avatarUrl
-            userMO.id = Int32(user.id)
-            userMO.nodeId = user.nodeId
-            userMO.gravatarId = user.gravatarId
-            userMO.name = user.name
-            userMO.url = user.url
-            userMO.htmlUrl = user.htmlUrl
-            userMO.followerUrl = user.followersUrl
-            userMO.followingUrl = user.followingUrl
-            userMO.gistsUrl = user.gistsUrl
-            userMO.starredUrl = user.starredUrl
-            userMO.subscriptionsUrl = user.subscriptionsUrl
-            userMO.organizationsUrl = user.organizationsUrl
-            userMO.reposUrl = user.reposUrl
-            userMO.eventsUrl = user.eventsUrl
-            userMO.receivedEventsUrl = user.receivedEventsUrl
-            userMO.type = user.type
-            userMO.siteAdmin = user.siteAdmin
+            userMO.setValues(model: user)
             return .success(true)
             
         case .failure(let error):
@@ -90,25 +73,7 @@ extension UserRepository: UserRepositoryInterface {
         case .success(let entity):
             if let userMO = entity
             {
-                userMO.avatarUrl = user.avatarUrl
-                userMO.id = Int32(user.id)
-                userMO.nodeId = user.nodeId
-                userMO.gravatarId = user.gravatarId
-                userMO.name = user.name
-                userMO.url = user.url
-                userMO.htmlUrl = user.htmlUrl
-                userMO.followerUrl = user.followersUrl
-                userMO.followingUrl = user.followingUrl
-                userMO.gistsUrl = user.gistsUrl
-                userMO.starredUrl = user.starredUrl
-                userMO.subscriptionsUrl = user.subscriptionsUrl
-                userMO.organizationsUrl = user.organizationsUrl
-                userMO.reposUrl = user.reposUrl
-                userMO.eventsUrl = user.eventsUrl
-                userMO.receivedEventsUrl = user.receivedEventsUrl
-                userMO.type = user.type
-                userMO.siteAdmin = user.siteAdmin
-                
+                userMO.setValues(model: user)
                 return .success(true)
             } else {
                 return .failure(CoreDataError.noDataFound)
@@ -123,6 +88,27 @@ extension UserRepository: UserRepositoryInterface {
 extension UserEntity: DomainModel {
     
     typealias DomainModelType = User
+    
+    func setValues(model: User) {
+        avatarUrl = model.avatarUrl
+        id = Int32(model.id)
+        nodeId = model.nodeId
+        gravatarId = model.gravatarId
+        name = model.name
+        url = model.url
+        htmlUrl = model.htmlUrl
+        followerUrl = model.followersUrl
+        followingUrl = model.followingUrl
+        gistsUrl = model.gistsUrl
+        starredUrl = model.starredUrl
+        subscriptionsUrl = model.subscriptionsUrl
+        organizationsUrl = model.organizationsUrl
+        reposUrl = model.reposUrl
+        eventsUrl = model.eventsUrl
+        receivedEventsUrl = model.receivedEventsUrl
+        type = model.type
+        siteAdmin = model.siteAdmin
+    }
     
     func toDomainModel() -> User {
         return User(id: Int(id),
