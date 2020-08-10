@@ -34,8 +34,10 @@ extension UserRepository: UserRepositoryInterface {
             
         case .success(let usersEntity):
             let users = usersEntity.map { userEntity -> User in
+                
                 return userEntity.toDomainModel()
             }
+            
             return .success(users)
         case .failure(let error):
             return .failure(error)
@@ -109,6 +111,7 @@ extension UserEntity: DomainModel {
         type = model.type
         siteAdmin = model.siteAdmin
         note = model.note
+        seen = model.seen
     }
     
     func toDomainModel() -> User {
@@ -131,6 +134,7 @@ extension UserEntity: DomainModel {
                     type: type!,
                     siteAdmin: siteAdmin,
                     note: note ?? "",
-                    currentIndex: Int(currentIndex))
+                    currentIndex: Int(currentIndex),
+                    seen: seen)
     }
 }

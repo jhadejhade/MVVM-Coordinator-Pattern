@@ -23,5 +23,6 @@ struct StringConstants {
     static let detailsTitle = "Details"
     static let usersTitle = "Users"
     static let saveTitle = "Save"
+    static let searchPlaceholder = "Search by login name or notes..."
     
 }

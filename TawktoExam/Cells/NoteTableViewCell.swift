@@ -82,6 +82,13 @@ class NoteTableViewCell: UITableViewCell, UsersElementCell {
         nameLabel.text = user.name
         detailsLabel.text = user.type
         avatar.load(placeholder: UIImage(systemName: "person.circle"), imgUrl: user.avatarUrl) { (image) in }
+        
+        if (user.seen)
+        {
+            self.backgroundColor = .lightGray
+        } else {
+            self.backgroundColor = .white
+        }
     }
     
     override func draw(_ rect: CGRect) {

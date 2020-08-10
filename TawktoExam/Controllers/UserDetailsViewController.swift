@@ -53,7 +53,7 @@ class UserDetailsViewController: BaseViewController {
         removeObservers()
     }
     
-    @objc func DismissKeyboard(){
+    @objc func dismissKeyboard(){
         //Causes the view to resign from the status of first responder.
         view.endEditing(true)
     }
@@ -71,7 +71,7 @@ class UserDetailsViewController: BaseViewController {
     {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(with:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(with:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DismissKeyboard))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
     }
     

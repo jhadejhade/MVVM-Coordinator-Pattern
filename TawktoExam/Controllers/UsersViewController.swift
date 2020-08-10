@@ -31,11 +31,13 @@ class UsersViewController: BaseViewController, UserController {
     var tableView = UITableView()
     
     var userViewModel = UserViewModel()
-    
     var lastPage = 0
     var currentVisibleIndex = 0
+    var isSearching = false
     
     lazy var searchBar:UISearchBar = UISearchBar()
+    
+    var ogDataSource: [User]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +45,7 @@ class UsersViewController: BaseViewController, UserController {
         configureUI()
         
         self.networkStatusChanged = { (status) in
-             self.getUsers(page: self.lastPage)
+            self.getUsers(page: self.lastPage)
         }
     }
     
@@ -75,13 +77,16 @@ class UsersViewController: BaseViewController, UserController {
         tableView.register(InvertedTableViewCell.self, forCellReuseIdentifier: UsersElementType.invertedCell.rawValue)
         
         searchBar.searchBarStyle = UISearchBar.Style.prominent
-        searchBar.placeholder = "Search..."
+        searchBar.placeholder = StringConstants.searchPlaceholder
         searchBar.sizeToFit()
         searchBar.isTranslucent = false
         searchBar.backgroundImage = UIImage()
         searchBar.delegate = self
         navigationItem.titleView = searchBar
+        
+        self.tableView.keyboardDismissMode = .onDrag
     }
+    
     
     func getUsers(page: Int){
         userViewModel.fetchUsers(page: page) { [weak self] (result) in
@@ -93,12 +98,15 @@ class UsersViewController: BaseViewController, UserController {
                 // if we successfully got a new batch of data reloadTable
                 if (responseUsers.count > 0)
                 {
+                    self?.ogDataSource = self?.userViewModel.users
                     DispatchQueue.main.async {
                         self?.tableView.reloadData()
+                        
                     }
-                } else {
-                    // Hide the tableFooterView, respectively the activity indicator if no new batch was received
+                }
+                DispatchQueue.main.async {
                     self?.tableView.tableFooterView = nil
+                    self?.tableView.tableFooterView?.isHidden = true
                 }
             }
         }
@@ -141,9 +149,9 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource
         let lastRowIndex = tableView.numberOfRows(inSection: lastSectionIndex) - 1
         // add loading view if current cell is the last cell
         if indexPath.section == lastSectionIndex && indexPath.row == lastRowIndex{
-            //save the last row so we can fetch additional data once connected to the internet
+            //save the last row so we can fetch additional data once connected to the internet and searching is not enabled
             self.lastPage = lastRowIndex
-            if ( currentReachabilityStatus != .notReachable)
+            if (currentReachabilityStatus != .notReachable && !isSearching)
             {
                 // get new batch of users if any
                 getUsers(page: userViewModel.users[lastRowIndex].id)
@@ -159,16 +167,20 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         coordinator?.viewDetails(viewController: self, user: userViewModel.users[indexPath.row], index: indexPath.row)
+        userViewModel.users[indexPath.row].seen = true
+        userViewModel.updateUserDetails(index: indexPath.row) { (result) in
+            self.tableView.reloadData()
+        }
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         var visibleRect = CGRect()
-
-           visibleRect.origin = tableView.contentOffset
-           visibleRect.size = tableView.bounds.size
-
-           let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-
+        
+        visibleRect.origin = tableView.contentOffset
+        visibleRect.size = tableView.bounds.size
+        
+        let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
+        
         guard let indexPath = tableView.indexPathForRow(at: visiblePoint) else { return }
         
         currentVisibleIndex = indexPath.row
@@ -178,8 +190,18 @@ extension UsersViewController: UITableViewDelegate, UITableViewDataSource
 extension UsersViewController: UISearchBarDelegate
 {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        
-//        self.userViewModel.users = self.userViewModel.users.filter { $0.name == searchText.lowercased() || $0.name.contains(searchText.lowercased())}
-//        self.tableView.reloadData()
+        isSearching = true
+        //set ogdatasource everytime we strike a key so the search results is always accurate
+        self.userViewModel.users = ogDataSource
+        self.userViewModel.users = self.userViewModel.users.filter { ($0.name.lowercased() == searchText.lowercased() || $0.name.lowercased().contains(searchText.lowercased())) || ($0.note.lowercased() == searchText.lowercased() || $0.note.lowercased().contains(searchText.lowercased()))}
+        if (searchText.isEmpty)
+        {
+            // put back the og datasource   
+            self.userViewModel.users = ogDataSource
+            isSearching = false
+        }
+        
+        self.tableView.reloadData()
     }
+    
 }

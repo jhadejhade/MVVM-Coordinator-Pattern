@@ -62,6 +62,7 @@ extension UserViewModel
                     switch result {
                     case .success(let users):
                         self.users[i].note = users.first?.note ?? ""
+                        self.users[i].seen = users.first?.seen ?? false
                     case .failure(let error):
                         //error fetching notes
                         print(error)
@@ -73,6 +74,20 @@ extension UserViewModel
                 
                 completion(.success(responseUsers))
             }
+        }
+    }
+    
+    func updateUserDetails(index: Int, completion: @escaping (Result<Bool, Error>) -> Void){
+        let user = self.users[index]
+        // update on the details
+        let result = createUserUow.userRepository.update(user: user)
+        switch result {
+        case .success(let success):
+            //only save change if we successfully got the data to update
+            createUserUow.saveChanges()
+            completion(.success(success))
+        case .failure(let error):
+            completion(.failure(error))
         }
     }
     

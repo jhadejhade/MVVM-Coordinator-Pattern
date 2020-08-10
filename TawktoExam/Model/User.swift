@@ -31,7 +31,7 @@ class User: Codable, UsersElementModel {
     
     // add default value since we are just using this locally so the compiler won't complain that we did not include this in the CodingKeys
     var note: String = ""
-    
+    var seen: Bool = false
     ///This will determine the cell type on our table
     var currentIndex: Int = 0 {
         didSet {
@@ -67,7 +67,7 @@ class User: Codable, UsersElementModel {
         case siteAdmin
     }
     
-    init(id: Int, nodeId: String, gravatarId: String, name: String, avatarUrl: String, url: String, htmlUrl: String, followersUrl: String, followingUrl: String, gistsUrl: String, starredUrl: String, subscriptionsUrl: String, organizationsUrl: String, reposUrl: String, eventsUrl: String, receivedEventsUrl: String, type: String, siteAdmin: Bool, note: String = "", currentIndex: Int = 0, cellType: UsersElementType = .normalCell) {
+    init(id: Int, nodeId: String, gravatarId: String, name: String, avatarUrl: String, url: String, htmlUrl: String, followersUrl: String, followingUrl: String, gistsUrl: String, starredUrl: String, subscriptionsUrl: String, organizationsUrl: String, reposUrl: String, eventsUrl: String, receivedEventsUrl: String, type: String, siteAdmin: Bool, note: String = "", currentIndex: Int = 0, cellType: UsersElementType = .normalCell, seen: Bool) {
         self.id = id
         self.nodeId = nodeId
         self.gravatarId = gravatarId
@@ -89,6 +89,7 @@ class User: Codable, UsersElementModel {
         self.note = note
         self.currentIndex = currentIndex
         self.cellType = cellType
+        self.seen = seen
     }
     
 }

@@ -93,6 +93,13 @@ class InvertedTableViewCell: UITableViewCell, UsersElementCell {
         {
             noteButtonImage.isHidden = false
         }
+        
+        if (user.seen)
+        {
+            self.backgroundColor = .lightGray
+        } else {
+            self.backgroundColor = .black
+        }
     }
     
     override func draw(_ rect: CGRect) {
